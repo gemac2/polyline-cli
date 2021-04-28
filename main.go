@@ -25,7 +25,7 @@ func EncodedPolyline() []byte {
 	logsFile, err := os.Open(nameFile)
 
 	if err != nil {
-		log.Fatalf("EncodedPolyline - Error open file %s: %v\n", nameFile, err)
+		log.Fatalf("EncodedPolyline - Error open file %v: %v\n", nameFile, err)
 	}
 
 	defer logsFile.Close()
@@ -43,12 +43,13 @@ func EncodedPolyline() []byte {
 			resultLog := strings.Split(log, containedString)
 			coords = append(coords, make([]float64, 0))
 
-			rlSplit := resultLog[1]
-			latitude, _ := strconv.ParseFloat(rlSplit[0:11], 64)
-			longitude, _ := strconv.ParseFloat(rlSplit[12:24], 64)
+			locationValueOne := resultLog[1][0:11]
+			locationValueTwo := resultLog[1][12:24]
 
-			coords[i] = append(coords[i], latitude)
-			coords[i] = append(coords[i], longitude)
+			latitude, _ := strconv.ParseFloat(locationValueOne, 64)
+			longitude, _ := strconv.ParseFloat(locationValueTwo, 64)
+
+			coords[i] = append(coords[i], latitude, longitude)
 			i++
 		}
 	}
